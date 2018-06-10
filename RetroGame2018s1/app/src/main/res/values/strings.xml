@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Frogger</string>
+    <string name="play">Play</string>
+    <string name="let_s_play">Let\'s Play</string>
+    <string name="UP">▲</string>
+    <string name="DOWN">▼</string>
+    <string name="LEFT">◀</string>
+    <string name="RIGHT">▶</string>
+    <string name="FIRE">●</string>
+    <string name="tanks">TANKS</string>
+
+</resources>
