@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="release">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/release/rPeANUt3.2.1beta.jar!/" />
+      <root url="jar://$PROJECT_DIR$/release/rPeANUt3.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/release/rPeANUt3.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/release/rPeANUt3.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/release/rPeANUt2.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

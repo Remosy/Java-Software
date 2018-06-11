@@ -1,0 +1,14 @@
+
+================================
+i.
+
+================================
+ii.
+
+================================
+iii.
+At any given time, this math model of computation can be in one of finit-numbered state.
+It's opposite to turing machine, which can be in infinit-numbered state, both of them use memory.
+
+
+

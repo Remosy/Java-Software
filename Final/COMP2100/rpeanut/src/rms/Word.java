@@ -1,0 +1,157 @@
+package rms;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+/*
+ rPeanut - is a simple simulator of the rPeANUt computer.
+ Copyright (C) 2011  Eric McCreath
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+public class Word extends JTextField implements KeyListener {
+	protected int value;
+	static Font wordfont = Peanut.setUIFont(new Font(Font.MONOSPACED, Font.PLAIN, 14));
+	static String str32 = "0x00000000";
+	public int convert_selection = 0;
+	
+	public Word() {
+		this.addKeyListener(this);
+		value = 0;
+		this.setText(toString());
+		this.setFont(wordfont);
+		int width = this.getFontMetrics(wordfont).stringWidth(str32) + 5;
+		int height = this.getFontMetrics(wordfont).getHeight() + 3;
+	//	this.setPreferredSize(new Dimension(width, height));
+		this.setMinimumSize(new Dimension(width, height));
+	//	this.setMaximumSize(new Dimension(width, height));
+	}
+
+	public Word(int v1) {
+		this.addKeyListener(this);
+		value = v1;
+		this.setText(toString());
+		this.setFont(wordfont);
+	}
+
+	public Word(int v1, int v2) {
+		this.addKeyListener(this);
+		value = ((v1 & 0xffff) << 16) | (v2 & 0xffff);
+		this.setText(toString());
+		this.setFont(wordfont);
+	}
+
+	/*
+	 * public Word(int code, int r1, int r2, int rd, int add) { value = (((code
+	 * & 0xF) << 28) | ((r1 & 0xF) << 24) | ((r2 & 0xF) << 20) | ((rd & 0xF) <<
+	 * 16) | (add & 0xFFFF)) ; this.setFont(wordfont); }
+	 */
+	static int build(int code, int r1, int r2, int rd, int add) {
+		return (((code & 0xF) << 28) | ((r1 & 0xF) << 24) | ((r2 & 0xF) << 20)
+				| ((rd & 0xF) << 16) | (add & 0xFFFF));
+	}
+
+	static int build(int v1, int v2) {
+		return ((v1 & 0xffff) << 16) | (v2 & 0xffff);
+	}
+
+	
+	public String showDec() {
+		return String.format("%d", value);
+	}
+
+	public String show2comp_Dec() {
+
+		return String.format("%d", value);
+	}
+	
+	public String showAscii() {
+		return String.format("%c%c%c%c", viewAscii((value>>24) & 0xFF),viewAscii((value>>16) & 0xFF),viewAscii((value>>8) & 0xFF),viewAscii((value>>0) & 0xFF));
+	}
+	
+	
+	private char viewAscii(int i) {
+		if (i >= 32 && i <= 126) return (char) i;
+		return '.';
+	}
+
+	public String toString() {
+		
+			return String.format("0x%04x%04x", 0xffff & (value >> 16),
+					0xffff & value);
+		
+	}
+
+	void set(int v) {
+		value = v;
+		this.setText(toString());
+	}
+
+    void set(int v, int index) {
+		System.out.println( v+" too =>"+value);
+		switch (index){
+				case 0:
+					this.setText(show2comp_Dec());
+					break;
+				case 1:
+					this.setText(toString());
+					break;
+				case 2:
+					this.setText(showAscii());
+					break;
+
+		}
+    }
+
+	public int get() {
+		return value;
+	}
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		D.p("key released : " + this.getText());
+		String text = this.getText();
+		if (text.length() > 10) {
+			text = text.substring(0, 10);
+			this.setText(text);
+		} 
+		Defines defines = new Defines();
+		MySimpleTokenizer tok = new MySimpleTokenizer(defines,text);
+		if (tok.hasCurrent() && tok.current() instanceof Integer) {
+			value = ((Integer) tok.current()).intValue();
+		}
+		
+	/*	ArrayList<ParseError> errorlist = new ArrayList<ParseError>();
+		Attribute att = Ass.parse(text, new Lineinfo(text, 1, "<stdin>"),
+				errorlist);
+		if (errorlist.size() == 0 && att != null && att.type == AttType.VALUE
+				&& att.val != null) {
+			value = att.val;
+			// System.out.println("value : " + value);
+		}*/
+
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		D.p("key typed : " + this.getText());
+	}
+}
