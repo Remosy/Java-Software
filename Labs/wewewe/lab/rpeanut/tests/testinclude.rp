@@ -1,3 +1,0 @@
-0x50:
-main:
-	#include "tests/testinclude2.rp"
