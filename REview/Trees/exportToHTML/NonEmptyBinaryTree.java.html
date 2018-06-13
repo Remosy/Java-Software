@@ -1,0 +1,144 @@
+<html>
+<head>
+<title>NonEmptyBinaryTree.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #999999; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(128,128,128); font-style: italic; }
+.s1 { color: rgb(128,128,128); font-weight: bold; font-style: italic; }
+.s2 { color: rgb(0,0,0); }
+.s3 { color: rgb(0,0,128); font-weight: bold; }
+.s4 { color: rgb(0,0,255); }
+.s5 { color: rgb(0,128,0); font-weight: bold; }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+NonEmptyBinaryTree.java</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">/** 
+ * NonEmptyBinaryTree - this is a binary search tree that is either an inner node 
+ * of the tree or a leaf node.  Leaf nodes will have 2 empty nodes attached to  
+ * the right and the left subtrees.  Note that the insert and remove operation return  
+ * the changed tree and they will generally modify existing trees.  
+ *  
+ *  
+ * </span><span class="s1">@author </span><span class="s0">Eric McCreath - GPLv2 
+ */</span><span class="s2"> 
+ 
+ 
+</span><span class="s3">public class </span><span class="s2">NonEmptyBinaryTree </span><span class="s3">extends </span><span class="s2">BinaryTree { 
+ 
+    </span><span class="s3">int </span><span class="s2">data; 
+    BinaryTree left, right; 
+    </span><span class="s3">public </span><span class="s2">NonEmptyBinaryTree(</span><span class="s3">int </span><span class="s2">data) { 
+        </span><span class="s3">this</span><span class="s2">.data = data; 
+        left = </span><span class="s3">new </span><span class="s2">EmptyBinaryTree(); 
+        right = </span><span class="s3">new </span><span class="s2">EmptyBinaryTree(); } 
+    </span><span class="s3">public </span><span class="s2">NonEmptyBinaryTree(</span><span class="s3">int </span><span class="s2">data, BinaryTree left, BinaryTree right){ 
+        </span><span class="s3">this</span><span class="s2">.data = data; 
+        </span><span class="s3">this</span><span class="s2">.left = left; 
+        </span><span class="s3">this</span><span class="s2">.right = right; } 
+    </span><span class="s3">public </span><span class="s2">BinaryTree insert(</span><span class="s3">int </span><span class="s2">d) { 
+        </span><span class="s3">if </span><span class="s2">(data == d) { </span><span class="s3">return this</span><span class="s2">; } </span><span class="s3">else if </span><span class="s2">(d &lt; data) { 
+            </span><span class="s3">return new </span><span class="s2">NonEmptyBinaryTree(data, left.insert(d), right); 
+        } </span><span class="s3">else </span><span class="s2">{ 
+            </span><span class="s3">return new </span><span class="s2">NonEmptyBinaryTree(data, left, right.insert(d));}} 
+    </span><span class="s3">public int </span><span class="s2">size() { 
+        </span><span class="s3">return </span><span class="s4">1 </span><span class="s2">+ left.size() + right.size(); 
+    } 
+    @Override 
+    </span><span class="s3">public int </span><span class="s2">height() { 
+        </span><span class="s3">return </span><span class="s4">1 </span><span class="s2">+ Math.max(left.height(), right.height()); 
+    } 
+    @Override 
+    </span><span class="s3">public </span><span class="s2">String show() { 
+        </span><span class="s3">if </span><span class="s2">(left.isEmpty() &amp;&amp; right.isEmpty()) </span><span class="s3">return </span><span class="s2">data + </span><span class="s5">&quot;&quot;</span><span class="s2">; 
+        </span><span class="s3">else return </span><span class="s2">data + </span><span class="s5">&quot; (&quot; </span><span class="s2">+ left.show() + </span><span class="s5">&quot;,&quot; </span><span class="s2">+ right.show() + </span><span class="s5">&quot;)&quot;</span><span class="s2">;} 
+    @Override 
+    </span><span class="s3">public </span><span class="s2">BinaryTree remove(</span><span class="s3">int </span><span class="s2">d) { 
+        </span><span class="s3">if </span><span class="s2">(data == d) { 
+            </span><span class="s3">if </span><span class="s2">(left.isEmpty()) </span><span class="s3">return </span><span class="s2">right; 
+            </span><span class="s3">else if </span><span class="s2">(right.isEmpty()) </span><span class="s3">return </span><span class="s2">left; 
+            </span><span class="s3">else </span><span class="s2">{ 
+                </span><span class="s3">int </span><span class="s2">b = left.biggest(); 
+                </span><span class="s3">return new </span><span class="s2">NonEmptyBinaryTree(b, left.remove(b), right);} 
+        } </span><span class="s3">else if </span><span class="s2">(d &lt; data) { 
+            </span><span class="s3">return new </span><span class="s2">NonEmptyBinaryTree(data, left.remove(d), right); 
+        } </span><span class="s3">else </span><span class="s2">{ 
+            </span><span class="s3">return new </span><span class="s2">NonEmptyBinaryTree(data, left, right.remove(d));}} 
+    @Override 
+    </span><span class="s3">public boolean </span><span class="s2">isEmpty() { 
+        </span><span class="s3">return false</span><span class="s2">; 
+    } 
+    @Override 
+    </span><span class="s3">public </span><span class="s2">Integer biggest() { 
+        </span><span class="s3">if </span><span class="s2">(right.isEmpty()) </span><span class="s3">return </span><span class="s2">data; 
+        </span><span class="s3">else return </span><span class="s2">right.biggest(); } 
+    @Override 
+    </span><span class="s3">public boolean </span><span class="s2">elementOf(</span><span class="s3">int </span><span class="s2">d) { 
+        </span><span class="s3">if </span><span class="s2">(data == d) </span><span class="s3">return true</span><span class="s2">; 
+        </span><span class="s3">else if </span><span class="s2">(d &lt; data) </span><span class="s3">return </span><span class="s2">left.elementOf(d); 
+        </span><span class="s3">else return </span><span class="s2">right.elementOf(d); } 
+    @Override 
+    </span><span class="s3">public int </span><span class="s2">balanceFactor() { 
+        </span><span class="s3">return </span><span class="s2">left.height() - right.height();} 
+    </span><span class="s3">public boolean </span><span class="s2">avlBalanced() { 
+        </span><span class="s3">return </span><span class="s2">-</span><span class="s4">1 </span><span class="s2">&lt;= balanceFactor() &amp;&amp; balanceFactor() &lt;= </span><span class="s4">1</span><span class="s2">  
+                &amp;&amp; left.avlBalanced() &amp;&amp; right.avlBalanced();} 
+     
+     
+     
+     
+    @Override 
+    </span><span class="s3">public </span><span class="s2">String treeshow() { 
+        </span><span class="s3">if </span><span class="s2">(left.isEmpty() &amp;&amp; right.isEmpty()) </span><span class="s3">return </span><span class="s5">&quot; &quot; </span><span class="s2">+ data + </span><span class="s5">&quot; &quot;</span><span class="s2">; 
+        String stl = left.treeshow(); 
+        String str = right.treeshow(); 
+        String stal[] = stl.split(</span><span class="s5">&quot;</span><span class="s3">\n</span><span class="s5">&quot;</span><span class="s2">); 
+        String star[] = str.split(</span><span class="s5">&quot;</span><span class="s3">\n</span><span class="s5">&quot;</span><span class="s2">); 
+        </span><span class="s3">int </span><span class="s2">lenl = stal[</span><span class="s4">0</span><span class="s2">].length(); 
+        </span><span class="s3">int </span><span class="s2">lenr = star[</span><span class="s4">0</span><span class="s2">].length(); 
+        StringBuffer res = </span><span class="s3">new </span><span class="s2">StringBuffer(); 
+        String strdata = data + </span><span class="s5">&quot;&quot;</span><span class="s2">; 
+        </span><span class="s3">int </span><span class="s2">fullsize = lenl + strdata.length() + lenr; 
+         
+     
+        res.append(repeat(</span><span class="s5">&quot; &quot;</span><span class="s2">, (lenl)) + strdata + repeat(</span><span class="s5">&quot; &quot;</span><span class="s2">, lenr ) + </span><span class="s5">&quot;</span><span class="s3">\n</span><span class="s5">&quot;</span><span class="s2">); 
+        </span><span class="s3">int </span><span class="s2">lcentre = (left.isEmpty() ? </span><span class="s4">0 </span><span class="s2">: centre(stal[</span><span class="s4">0</span><span class="s2">])); 
+        </span><span class="s3">int </span><span class="s2">rcentre = (right.isEmpty() ? </span><span class="s4">0 </span><span class="s2">:centre(star[</span><span class="s4">0</span><span class="s2">])); 
+         
+        res.append(repeat(</span><span class="s5">&quot; &quot;</span><span class="s2">,lcentre) + </span><span class="s5">&quot;+&quot; </span><span class="s2">+ repeat(</span><span class="s5">&quot;-&quot;</span><span class="s2">,lenl-lcentre-</span><span class="s4">1</span><span class="s2">) + </span><span class="s5">&quot;+&quot; </span><span class="s2">+ repeat(</span><span class="s5">&quot;-&quot;</span><span class="s2">,rcentre-</span><span class="s4">1</span><span class="s2">+strdata.length()) +  </span><span class="s5">&quot;+&quot; </span><span class="s2">+ repeat(</span><span class="s5">&quot; &quot;</span><span class="s2">,lenr-rcentre -</span><span class="s4">1</span><span class="s2">) + </span><span class="s5">&quot;</span><span class="s3">\n</span><span class="s5">&quot;</span><span class="s2">); 
+        res.append(repeat(</span><span class="s5">&quot; &quot;</span><span class="s2">,lcentre) + (left.isEmpty()? </span><span class="s5">&quot; &quot; </span><span class="s2">: </span><span class="s5">&quot;|&quot;</span><span class="s2">) + repeat(</span><span class="s5">&quot; &quot;</span><span class="s2">,lenl-lcentre-</span><span class="s4">1</span><span class="s2">) +  repeat(</span><span class="s5">&quot; &quot;</span><span class="s2">,rcentre + strdata.length()) +  (right.isEmpty()? </span><span class="s5">&quot; &quot; </span><span class="s2">: </span><span class="s5">&quot;|&quot;</span><span class="s2">) + repeat(</span><span class="s5">&quot; &quot;</span><span class="s2">,lenr-rcentre-</span><span class="s4">1</span><span class="s2">) +</span><span class="s5">&quot;</span><span class="s3">\n</span><span class="s5">&quot;</span><span class="s2">); 
+         
+        </span><span class="s3">for</span><span class="s2">(</span><span class="s3">int </span><span class="s2">i = </span><span class="s4">0</span><span class="s2">;i&lt;Math.max(stal.length, star.length);i++) { 
+            res.append( (i&lt;stal.length ? stal[i] : repeat(</span><span class="s5">&quot; &quot;</span><span class="s2">, lenl)) +repeat(</span><span class="s5">&quot; &quot;</span><span class="s2">,strdata.length()) +  (i&lt;star.length? star[i] : repeat(</span><span class="s5">&quot; &quot;</span><span class="s2">, lenr)) + </span><span class="s5">&quot;</span><span class="s3">\n</span><span class="s5">&quot;</span><span class="s2">); 
+        } 
+        </span><span class="s3">return </span><span class="s2">res.toString(); 
+    } 
+ 
+    </span><span class="s3">protected int </span><span class="s2">centre(String string) { 
+        </span><span class="s3">int </span><span class="s2">i = </span><span class="s4">0</span><span class="s2">; 
+        </span><span class="s3">while </span><span class="s2">(i &lt; string.length() &amp;&amp; string.charAt(i) == </span><span class="s5">' '</span><span class="s2">) i++; 
+        </span><span class="s3">return </span><span class="s2">i; 
+    } 
+ 
+    </span><span class="s3">protected </span><span class="s2">String repeat(String string, </span><span class="s3">int </span><span class="s2">n) { 
+        String res = </span><span class="s5">&quot;&quot;</span><span class="s2">; 
+        </span><span class="s3">for </span><span class="s2">(</span><span class="s3">int </span><span class="s2">i = </span><span class="s4">0</span><span class="s2">; i&lt;n;i++) res += string; 
+        </span><span class="s3">return </span><span class="s2">res; 
+    } 
+ 
+ 
+     
+     
+     
+     
+     
+} 
+</span></pre>
+</body>
+</html>
